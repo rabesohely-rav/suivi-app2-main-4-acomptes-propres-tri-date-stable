@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Réservations - Suivi voyage Madagascar</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+
+<main class="page">
+  <section class="hero">
+    <div class="eyebrow">Réservations</div>
+    <h1>Mes réservations</h1>
+    <p>Hébergements, voiture, contacts et numéros utiles regroupés sur une seule page.</p>
+  </section>
+  
+<section class="nav-card">
+  <div class="grid-3">
+    <a data-nav class="nav-item" href="../index.html"><strong>Accueil</strong></a>
+    <a data-nav class="nav-item" href="./convertisseur.html"><strong>Convertisseur</strong></a>
+    <a data-nav class="nav-item" href="./depenses.html"><strong>Dépenses</strong></a>
+    <a data-nav class="nav-item" href="./feuille-de-route.html"><strong>Feuille de route</strong></a>
+    <a data-nav class="nav-item" href="./reservations.html"><strong>Réservations</strong></a>
+    <a data-nav class="nav-item" href="./infos-utiles.html"><strong>Infos utiles</strong></a>
+  </div>
+</section>
+
+
+  <section class="panel">
+    <div class="day-top" style="margin-bottom:12px">
+      <h2 class="section-title" style="margin:0">Liste</h2>
+      <div class="header-actions">
+        <button type="button" class="btn btn-primary" id="addReservationBtn">+ Ajouter</button>
+        <button type="button" class="btn btn-secondary" id="resetReservationsBtn">Réinitialiser</button>
+      </div>
+    </div>
+    <div class="note" style="margin-bottom:10px">Les modifications sont sauvegardées localement sur cet appareil.</div>
+    <div id="reservationsList" class="list"></div>
+  </section>
+  <div class="page-footer">Réservations • <span data-current-year></span></div>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const STORAGE_KEY = 'suivi-app2.reservations.v1';
+  const container = document.getElementById('reservationsList');
+  const addBtn = document.getElementById('addReservationBtn');
+  const resetBtn = document.getElementById('resetReservationsBtn');
+  let initialData = [];
+  let data = [];
+
+  const escapeHtml = (value) => String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function loadSaved() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (Array.isArray(saved)) return saved;
+    } catch (_) {}
+    return null;
+  }
+
+  function render() {
+    container.innerHTML = data.map((item, index) => `
+      <article class="item" data-index="${index}">
+        <div class="grid-2">
+          <div>
+            <label>Date</label>
+            <input data-field="date" type="date" value="${escapeHtml(item.date)}" />
+          </div>
+          <div>
+            <label>Type</label>
+            <input data-field="type" value="${escapeHtml(item.type)}" placeholder="Hébergement, Transport…" />
+          </div>
+        </div>
+        <label>Nom</label>
+        <input data-field="nom" value="${escapeHtml(item.nom)}" placeholder="Nom de la réservation" />
+        <label>Lieu</label>
+        <input data-field="lieu" value="${escapeHtml(item.lieu)}" placeholder="Ville / lieu" />
+        <label>Contact</label>
+        <input data-field="contact" value="${escapeHtml(item.contact)}" placeholder="Téléphone / contact" />
+        <label>Numéro de réservation</label>
+        <input data-field="reservation" value="${escapeHtml(item.reservation)}" placeholder="Référence" />
+        <label>Notes</label>
+        <textarea data-field="notes" rows="3" placeholder="Notes utiles">${escapeHtml(item.notes)}</textarea>
+        <div class="header-actions" style="margin-top:10px">
+          <span class="badge badge-upcoming">${escapeHtml(item.type || 'Réservation')}</span>
+          <button type="button" class="btn btn-warning" data-delete="${index}">Supprimer</button>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  try {
+    const res = await fetch('../assets/data/reservations.json');
+    initialData = await res.json();
+  } catch {
+    initialData = [];
+  }
+
+  data = loadSaved() || JSON.parse(JSON.stringify(initialData));
+  render();
+
+  container.addEventListener('input', (event) => {
+    const field = event.target.dataset.field;
+    if (!field) return;
+    const card = event.target.closest('[data-index]');
+    if (!card) return;
+    data[Number(card.dataset.index)][field] = event.target.value;
+    save();
+  });
+
+  container.addEventListener('click', (event) => {
+    const index = event.target.dataset.delete;
+    if (index === undefined) return;
+    if (!confirm('Supprimer cette réservation ?')) return;
+    data.splice(Number(index), 1);
+    save();
+    render();
+  });
+
+  addBtn.addEventListener('click', () => {
+    data.unshift({ date: '', type: 'Hébergement', nom: '', lieu: '', contact: '', reservation: '', notes: '' });
+    save();
+    render();
+  });
+
+  resetBtn.addEventListener('click', () => {
+    if (!confirm('Réinitialiser les réservations avec les données de départ ?')) return;
+    data = JSON.parse(JSON.stringify(initialData));
+    save();
+    render();
+  });
+});
+</script>
+
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

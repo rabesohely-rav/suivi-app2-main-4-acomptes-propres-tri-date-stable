@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dépenses - Suivi voyage Madagascar</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/depenses-budget.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">Budget terrain + suivi local</div>
+      <h1>💶 Dépenses</h1>
+      <p>Suivi modifiable des dépenses, nuitées, retraits et équivalents en ariary.</p>
+    </section>
+
+    <section class="nav-card">
+      <div class="grid-3">
+        <a data-nav class="nav-item" href="../index.html"><strong>Accueil</strong></a>
+        <a data-nav class="nav-item" href="./convertisseur.html"><strong>Convertisseur</strong></a>
+        <a data-nav class="nav-item" href="./depenses.html"><strong>Dépenses</strong></a>
+        <a data-nav class="nav-item" href="./feuille-de-route.html"><strong>Feuille de route</strong></a>
+        <a data-nav class="nav-item" href="./reservations.html"><strong>Réservations</strong></a>
+        <a data-nav class="nav-item" href="./infos-utiles.html"><strong>Infos utiles</strong></a>
+      </div>
+    </section>
+
+    <section class="depenses-app" id="depensesApp">
+    <section class="fx-card" aria-labelledby="fxTitle">
+      <div>
+        <p class="eyebrow">Taux dynamique</p>
+        <h2 id="fxTitle">1 € = <span id="rateValue">4 715,93</span> Ar</h2>
+        <p id="rateMeta">Source locale en attendant la mise à jour réseau.</p>
+      </div>
+      <div class="fx-actions">
+        <button type="button" id="refreshRateBtn">Mettre à jour le taux</button>
+        <label class="manual-rate">Taux manuel
+          <input id="manualRate" type="number" inputmode="decimal" step="0.01" min="1" placeholder="4715.93" />
+        </label>
+        <button type="button" id="saveRateBtn" class="secondary">Enregistrer</button>
+      </div>
+    </section>
+
+    <section class="summary-grid" aria-label="Résumé dépenses">
+      <article><span>Hébergement</span><strong id="sumLodging">0 €</strong><small id="sumLodgingAr">0 Ar</small></article>
+      <article><span>Autres dépenses</span><strong id="sumOther">0 €</strong><small id="sumOtherAr">0 Ar</small></article>
+      <article><span>Total dépenses</span><strong id="sumTotal">0 €</strong><small id="sumTotalAr">0 Ar</small></article>
+      <article><span>Retraits prévus</span><strong id="sumWithdrawals">0 €</strong><small id="sumWithdrawalsAr">0 Ar</small></article>
+      <article class="warning"><span>Solde cash estimé</span><strong id="sumCashBalance">0 €</strong><small>Retraits - dépenses terrain</small></article>
+    </section>
+
+    <section class="toolbar" aria-label="Actions dépenses">
+      <button type="button" id="addRowBtn">+ Ajouter une ligne</button>
+      <button type="button" id="saveBtn" class="secondary">Sauvegarder</button>
+      <button type="button" id="exportBtn" class="secondary">Exporter JSON</button>
+      <label class="import-json secondary" role="button">Importer JSON<input id="importInput" type="file" accept="application/json" hidden /></label>
+      <button type="button" id="resetBtn" class="danger">Réinitialiser Excel</button>
+    </section>
+
+    <section class="table-shell" aria-labelledby="tableTitle">
+      <div class="section-title">
+        <h2 id="tableTitle">Tableau des dépenses</h2>
+        <p>Chaque cellule est modifiable. Les acomptes sont séparés du coût total afin de calculer clairement le reste à régler.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="budget-table" id="expensesTable">
+          <colgroup>
+            <col class="col-date" />
+            <col class="col-localite" />
+            <col class="col-hebergement" />
+            <col class="col-euro" />
+            <col class="col-acompte" />
+            <col class="col-reste" />
+            <col class="col-ariary" />
+            <col class="col-nature" />
+            <col class="col-euro" />
+            <col class="col-ariary" />
+            <col class="col-euro" />
+            <col class="col-ariary" />
+            <col class="col-statut" />
+            <col class="col-action" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Localité</th>
+              <th>Hébergement</th>
+              <th>Séjour €</th>
+              <th>Acompte payé €</th>
+              <th>Reste €</th>
+              <th>Reste Ar</th>
+              <th>Nature des dépenses</th>
+              <th>Montant €</th>
+              <th>Montant Ar</th>
+              <th>Retrait €</th>
+              <th>Retrait Ar</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot class="budget-footer">
+            <tr>
+              <td colspan="3" class="footer-label">Totaux</td>
+              <td id="footLodging">0 €</td>
+              <td id="footDeposit">0 €</td>
+              <td id="footLodgingDue">0 €</td>
+              <td id="footLodgingDueAr">0 Ar</td>
+              <td id="footStatusTotals" class="footer-status">Payé : 0 € • À régler : 0 € • À vérifier : 0 €</td>
+              <td id="footOther">0 €</td>
+              <td id="footOtherAr">0 Ar</td>
+              <td id="footWithdrawals">0 €</td>
+              <td id="footWithdrawalsAr">0 Ar</td>
+              <td id="footCashBalance">0 €</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <section class="cash-plan" aria-labelledby="cashTitle">
+      <div class="section-title">
+        <h2 id="cashTitle">Cash recommandé</h2>
+        <p>Échelonnement des retraits et couverture prévue. Modifiable comme le reste.</p>
+      </div>
+      <div id="cashPlanList" class="cash-list"></div>
+    </section>
+    </section>
+
+    <div class="page-footer">Suivi des dépenses • données stockées localement dans ce navigateur • <span data-current-year></span></div>
+  </main>
+
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/depenses-budget.js"></script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+.depenses-app {
+  --dep-card: rgba(255, 253, 248, .98);
+  --dep-line: var(--border, rgba(15, 23, 42, .12));
+  --dep-muted: var(--muted, #64748b);
+  --dep-brand: var(--accent-2, #1f5e87);
+  --dep-brand-dark: #174a6a;
+  --dep-danger: var(--danger, #b42318);
+  --dep-soft: #fffaf0;
+
+  width: 100%;
+  margin: 0 auto 24px;
+  display: grid;
+  gap: 14px;
+}
+
+.fx-card,
+.depenses-app .summary-grid article,
+.depenses-app .table-shell,
+.depenses-app .cash-plan,
+.depenses-app .toolbar {
+  background: var(--dep-card);
+  border: 2px solid var(--dep-line);
+  border-radius: var(--radius, 20px);
+  box-shadow: 0 2px 8px rgba(0,0,0,.03);
+}
+
+.fx-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+}
+
+.depenses-app .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .78rem;
+  color: var(--dep-muted);
+  margin: 0 0 4px;
+}
+
+.fx-card h2 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 4vw, 2.1rem);
+  color: var(--accent, #4b0013);
+}
+
+.fx-card p { margin: 0; color: var(--dep-muted); }
+
+.fx-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.depenses-app button,
+.depenses-app .import-json {
+  border: 0;
+  border-radius: 12px;
+  padding: 11px 16px;
+  background: var(--dep-brand);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.depenses-app button:hover,
+.depenses-app .import-json:hover { background: var(--dep-brand-dark); }
+
+.depenses-app button.secondary,
+.depenses-app .import-json.secondary {
+  background: #ececec;
+  color: var(--text, #1c1c1c);
+}
+
+.depenses-app button.secondary:hover,
+.depenses-app .import-json.secondary:hover { background: #ddd; }
+
+.depenses-app button.danger { background: var(--dep-danger); color: #fff; }
+.depenses-app button.danger:hover { filter: brightness(.95); }
+
+.manual-rate {
+  display: grid;
+  gap: 4px;
+  font-size: .82rem;
+  color: var(--dep-muted);
+  font-weight: 700;
+}
+
+.manual-rate input {
+  width: 130px;
+  border: 1px solid var(--dep-line);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.depenses-app .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.depenses-app .summary-grid article {
+  padding: 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.depenses-app .summary-grid span,
+.depenses-app .summary-grid small { color: var(--dep-muted); }
+.depenses-app .summary-grid span { font-size: .88rem; }
+.depenses-app .summary-grid strong { font-size: 1.25rem; color: var(--accent, #4b0013); }
+.depenses-app .summary-grid .warning { background: #fff7cc; }
+
+.depenses-app .toolbar {
+  padding: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.depenses-app .table-shell,
+.depenses-app .cash-plan { padding: 16px; }
+
+.depenses-app .section-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.depenses-app .section-title h2 {
+  margin: 0;
+  color: var(--accent, #4b0013);
+}
+
+.depenses-app .section-title p {
+  margin: 0;
+  color: var(--dep-muted);
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--dep-line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.budget-table {
+  width: 100%;
+  min-width: 1640px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.budget-table .col-date { width: 132px; }
+.budget-table .col-localite { width: 210px; }
+.budget-table .col-hebergement { width: 245px; }
+.budget-table .col-euro { width: 112px; }
+.budget-table .col-acompte { width: 128px; }
+.budget-table .col-reste { width: 118px; }
+.budget-table .col-ariary { width: 132px; }
+.budget-table .col-nature { width: 230px; }
+.budget-table .col-statut { width: 130px; }
+.budget-table .col-action { width: 54px; }
+
+.budget-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--accent-2, #1f5e87);
+  color: #fff;
+  text-align: left;
+  font-size: .78rem;
+  letter-spacing: .02em;
+}
+
+.budget-table th,
+.budget-table td {
+  padding: 8px;
+  border-bottom: 1px solid var(--dep-line);
+  vertical-align: middle;
+}
+
+.budget-table tbody tr:nth-child(even) { background: var(--dep-soft); }
+
+.budget-table tfoot td {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: #fff7cc;
+  color: var(--text, #1c1c1c);
+  font-weight: 800;
+  border-top: 2px solid var(--accent-2, #1f5e87);
+  border-bottom: 0;
+  box-shadow: 0 -4px 10px rgba(0,0,0,.06);
+}
+
+.budget-table tfoot .footer-label {
+  color: var(--accent, #4b0013);
+  text-align: right;
+}
+
+.budget-table tfoot .footer-status {
+  min-width: 230px;
+  white-space: normal;
+  line-height: 1.35;
+}
+
+.budget-table input,
+.budget-table select,
+.cash-item input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 10px;
+  padding: 8px;
+  font: inherit;
+  color: var(--text, #1c1c1c);
+}
+
+.budget-table input:focus,
+.budget-table select:focus,
+.cash-item input:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--accent-2, #1f5e87);
+  box-shadow: 0 0 0 3px rgba(31,94,135,.12);
+}
+
+.money-eur,
+.money-ar {
+  color: #334155;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.delete-row {
+  padding: 7px 10px;
+  background: var(--dep-danger);
+  color: #fff;
+}
+
+
+.budget-table .money-eur {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.cash-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.cash-item {
+  border: 1px solid var(--dep-line);
+  border-radius: 18px;
+  padding: 14px;
+  background: #fff;
+  display: grid;
+  gap: 10px;
+}
+
+.cash-item label {
+  display: grid;
+  gap: 5px;
+  color: var(--dep-muted);
+  font-size: .82rem;
+}
+
+.cash-item strong {
+  font-size: 1.1rem;
+  color: var(--accent, #4b0013);
+}
+
+@media (max-width: 900px) {
+  .fx-card,
+  .depenses-app .section-title {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .depenses-app .summary-grid,
+  .cash-list { grid-template-columns: 1fr; }
+  .fx-actions { justify-content: flex-start; }
+  .depenses-app .toolbar > * { flex: 1 1 auto; }
+}
+
+
+/* Correctif ciblé mobile : empêche le décalage horizontal de la page dépenses. */
+.depenses-app,
+.depenses-app * {
+  min-width: 0;
+}
+
+.depenses-app .fx-card h2,
+.depenses-app .summary-grid strong,
+.depenses-app .section-title h2,
+.depenses-app .section-title p {
+  overflow-wrap: anywhere;
+}
+
+.depenses-app .table-scroll {
+  width: 100%;
+  max-width: 100%;
+  overscroll-behavior-x: contain;
+}
+
+@media (max-width: 760px) {
+  body:has(.depenses-app) {
+    overflow-x: hidden;
+  }
+
+  body:has(.depenses-app) .page {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow-x: hidden;
+  }
+
+  .depenses-app {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .fx-card,
+  .depenses-app .summary-grid article,
+  .depenses-app .toolbar,
+  .depenses-app .table-shell,
+  .depenses-app .cash-plan {
+    padding: 12px;
+  }
+
+  .fx-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .fx-actions button,
+  .fx-actions .manual-rate,
+  .fx-actions .manual-rate input,
+  .depenses-app .toolbar > * {
+    width: 100%;
+  }
+
+  .depenses-app .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .budget-table {
+    min-width: 1540px;
+  }
+}
